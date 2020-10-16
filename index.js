@@ -64,26 +64,27 @@ client.connect(err => {
         const file = req.files.file;
         const service = req.body.service;
         const description = req.body.description;
-        // const newImg = file.data;
-        // const encImg = newImg.toString('base64');
+        const newImg = file.data;
+        const encImg = newImg.toString('base64');
 
-        // var image = {
-        //     contentType: file.mimetype,
-        //     size: file.size,
-        //     img: Buffer.from(encImg, 'base64')
-        // };
+        var image = {
+            contentType: file.mimetype,
+            size: file.size,
+            img: Buffer.from(encImg, 'base64')
+        };
         cardCollection.insertOne({ file, service, description })
             .then(result => {
                 res.send(result.insertedCount > 0);
             })
-        console.log(file, service, description);
-        file.mv(`${__dirname}/image/${file.name}`, err => {
-            if (err) {
-                console.log(err);
-                return res.status(500).send({ msg: 'error 404! not found!' });
-            }
-            return res.send({ name: file.name, path: `/${file.name}` })
-        })
+        // console.log(file, service, description);
+        // file.mv(`${__dirname}/image/${file.name}`, err => {
+        //     if (err) {
+        //         console.log(err);
+        //         return res.status(500).send({ msg: 'error 404! not found!' });
+        //     }
+        //     return res.send({ name: file.name, path: `/${file.name}` 
+        //     })
+        // })
 
     })
 
