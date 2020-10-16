@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
 
 const uri = "mongodb+srv://DB-DB-DOOG-DOOG:123DBDB@cluster0.wqjmg.mongodb.net/creativeAgency?retryWrites=true&w=majority";
 
@@ -114,4 +115,4 @@ client.connect(err => {
 });
 
 
-app.listen(port)
+app.listen(process.env.PORT || port)
