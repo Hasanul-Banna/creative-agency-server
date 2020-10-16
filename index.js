@@ -23,6 +23,7 @@ client.connect(err => {
     const userCollection = client.db("creativeAgency").collection("user-services");
     const reviewCollection = client.db("creativeAgency").collection("reviews");
     const cardCollection = client.db("creativeAgency").collection("card");
+    const adminCollection = client.db("creativeAgency").collection("Admin");
 
     app.post('/addServices', (req, res) => {
         console.log(req.body);
@@ -33,12 +34,17 @@ client.connect(err => {
     })
 
     app.get("/getEvents", (req, res) => {
+        userCollection.find({email: req.query.email})
+            .toArray((err, documents) => {
+                res.send(documents)
+            })
+    })
+    app.get("/getEventss", (req, res) => {
         userCollection.find({})
             .toArray((err, documents) => {
                 res.send(documents)
             })
     })
-
     app.post('/addreview', (req, res) => {
         console.log(req.body);
         reviewCollection.insertOne(req.body)
@@ -87,6 +93,22 @@ client.connect(err => {
                 res.send(documents);
             })
     });
+
+    app.post('/admin', (req, res) => {
+        console.log(req.body); 
+        adminCollection.insertOne(req.body)
+            .then(results => {
+                res.send(results.insertedCount > 0)
+            })
+    })
+
+    app.post('/isAdmin', (req, res) => {
+        const email = req.body.email;
+        adminCollection.find({ email: email })
+            .toArray((err, doctors) => {
+                res.send(doctors.length > 0);
+            })
+    })
 
 });
 
